@@ -6,6 +6,7 @@ import { addSchema } from '../models/note.js';
 const router = express.Router();
 
 router.get('/', getAllNotesCtrl);
+router.get("/stats", getStatsNotesCtrl);
 
 router.get('/:id', getNoteCtrl);
 
@@ -15,6 +16,6 @@ router.delete('/:id', deleteNoteCtrl);
 
 router.patch("/:id", updateNoteCtrl);
 
-router.get("/stats",getStatsNotesCtrl)
+
 
 export { router as notesRouter };

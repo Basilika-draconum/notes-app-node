@@ -33,6 +33,19 @@ const updateNote = async (req, res) => {
     }
     res.json(updateNote);
 };
+const getStatsNotes = async (req, res) => {
+    const result = await Note.aggregate([
+        {
+            $group: {
+                _id: '$category',
+                activeCount: { $sum: { $cond: ['$status', 1, 0] } },
+                archivedCount: { $sum: { $cond: ['$status', 0, 1] } },
+            },
+        },
+    ]);
+    res.json(result);
+};
+export const getStatsNotesCtrl = ctrlWrapper(getStatsNotes);
 export const getAllNotesCtrl = ctrlWrapper(getAllNotes);
 export const getNoteCtrl = ctrlWrapper(getNote);
 export const addNoteCtrl = ctrlWrapper(addNote);

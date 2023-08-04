@@ -41,14 +41,20 @@ const updateNote = async (req: Request, res: Response) => {
 };
 
 const getStatsNotes = async (req: Request, res: Response) => {
-  const result = await Note.find({ category: "task", status: true });
-  res.json(result);
+  const result = await Note.aggregate([
+    {
+      $group: {
+        _id: '$category',
+        activeCount: { $sum: { $cond: ['$status', 1, 0] } },
+        archivedCount: { $sum: { $cond: ['$status', 0, 1] } },
+      },
+    },
+  ]);
+   res.json(result);
 }
-
-
+export const getStatsNotesCtrl = ctrlWrapper(getStatsNotes);
 export const getAllNotesCtrl = ctrlWrapper(getAllNotes);
 export const getNoteCtrl = ctrlWrapper(getNote);
 export const addNoteCtrl = ctrlWrapper(addNote);
 export const deleteNoteCtrl = ctrlWrapper(deleteNote);
 export const updateNoteCtrl = ctrlWrapper(updateNote);
-export const getStatsNotesCtrl = ctrlWrapper(getStatsNotes);
