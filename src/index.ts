@@ -27,7 +27,7 @@ app.use(express.json());
 
 app.use('/api/notes', notesRouter);
 
-app.use((req, res) => {
+app.use((req: Request, res: Response) => {
   res.status(404).json({ message: 'Not found' });
 });
 

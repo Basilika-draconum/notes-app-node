@@ -2,27 +2,28 @@ import { Schema, model } from 'mongoose';
 import Joi from 'joi';
 
 const categoryList = ['task', 'idea', 'random thought'];
-// const dateRegex = /\b(0?[1-9]|1[0-2])\/(0?[1-9]|[12]\d|3[01])\/\d{4}\b/g;
-// const dateRegex = /^(?:(?:0?[1-9]|1[0-2])\/(?:0?[1-9]|[12]\d|3[01])\/(?:[1-9]\d{3}))$/;
+const dateRegex = /^(?:(?:0?[1-9]|1[0-2])\/(?:0?[1-9]|[12]\d|3[01])\/(?:[1-9]\d{3}))$/;
 const dateValidator = {
   validator: function (date: string) {
-    // Regular expression to validate dates in format MM/DD/YYYY
-    const datePattern = /^(?:(?:0?[1-9]|1[0-2])\/(?:0?[1-9]|[12]\d|3[01])\/(?:[1-9]\d{3}))$/;
+    const datePattern = dateRegex;
     return datePattern.test(date);
   },
   message: (props: { value: string }) => `${props.value} is not a valid date in format MM/DD/YYYY!`,
 };
 
-const noteSchema = new Schema({
-  name: { type: String, required: true },
-  category: { type: String, enum: categoryList, required: true },
-  content: { type: String, required: true },
-  dates: {
-    type: String,
-    validate: dateValidator,
+const noteSchema = new Schema(
+  {
+    name: { type: String, required: true },
+    category: { type: String, enum: categoryList, required: true },
+    content: { type: String, required: true },
+    dates: {
+      type: String,
+      validate: dateValidator,
+    },
+    status: { type: Boolean, default: true },
   },
-  status: { type: Boolean, default: true },
-}, { versionKey: false, timestamps: true });
+  { versionKey: false, timestamps: true }
+);
 
 export const addSchema = Joi.object({
   name: Joi.string().min(3).required().messages({
@@ -44,7 +45,7 @@ export const addSchema = Joi.object({
     'string.empty': `"content" cannot be empty`,
   }),
   status: Joi.boolean(),
-  dates: Joi.string().pattern(/^(?:(?:0?[1-9]|1[0-2])\/(?:0?[1-9]|[12]\d|3[01])\/(?:[1-9]\d{3}))$/),
+  dates: Joi.string().pattern(dateRegex),
 });
 
 export const Note = model('note', noteSchema);

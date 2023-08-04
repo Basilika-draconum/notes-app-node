@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { ctrlWrapper } from '../utils/ctrlWrapper.js';
+import { ctrlWrapper } from '../helpers/ctrlWrapper.js';
 import { Note } from '../models/note.js';
 import { HttpError } from '../helpers/HttpError.js';
 
@@ -50,8 +50,8 @@ const getStatsNotes = async (req: Request, res: Response) => {
       },
     },
   ]);
-   res.json(result);
-}
+  res.json(result);
+};
 export const getStatsNotesCtrl = ctrlWrapper(getStatsNotes);
 export const getAllNotesCtrl = ctrlWrapper(getAllNotes);
 export const getNoteCtrl = ctrlWrapper(getNote);

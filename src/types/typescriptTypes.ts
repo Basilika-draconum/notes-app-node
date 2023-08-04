@@ -7,9 +7,6 @@ export interface Note {
   status: boolean;
   dates: string[]|string;
 }
-export interface NotesData {
-  listNotes: () => Promise<Note[]>;
-}   
 
 export interface HttpErrorType {
   status: number;
@@ -18,3 +15,4 @@ export interface HttpErrorType {
 export interface CustomError extends Error {
   status?: number;
 }
+export type HttpErrorStatus = 400 | 401 | 403 | 404;
