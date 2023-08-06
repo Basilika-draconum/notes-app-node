@@ -1,4 +1,4 @@
-import express, { Request, Response } from 'express';
+import express, { NextFunction, Request, Response } from 'express';
 import logger from 'morgan';
 import cors from 'cors';
 import mongoose from 'mongoose';
@@ -27,11 +27,13 @@ app.use(express.json());
 
 app.use('/api/notes', notesRouter);
 
-app.use((req: Request, res: Response) => {
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+app.use((err: CustomError, req: Request, res: Response, next: NextFunction): void => {
   res.status(404).json({ message: 'Not found' });
 });
 
-app.use((err: CustomError, req: Request, res: Response) => {
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+app.use((err: CustomError, req: Request, res: Response, next: NextFunction) => {
   const { status = 500, message = 'Server error' } = err;
   res.status(status).json({ message });
 });
