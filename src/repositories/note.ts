@@ -28,14 +28,14 @@ const deleteNote = async (req: Request, res: Response) => {
   if (!deleteNote) {
     throw HttpError(404);
   }
-  res.json({ message: `Contact deleted with id: ${id}` });
+  res.json({ message: `Note deleted with id: ${id}` });
 };
 
 const updateNote = async (req: Request, res: Response) => {
   const { id } = req.params;
   const updateNote = await Note.findByIdAndUpdate(id, req.body, { new: true });
   if (!updateNote) {
-    throw HttpError(404, `Book with ${id} not found`);
+    throw HttpError(404, `Note with ${id} not found`);
   }
   res.json(updateNote);
 };
